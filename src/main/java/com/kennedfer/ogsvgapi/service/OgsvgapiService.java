@@ -8,9 +8,21 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Base64;
 
 @Service
 public class OgsvgapiService {
+
+    private String convertImageUrlToBase64(String imageUrl) throws IOException {
+        try(InputStream in = new URL(imageUrl).openStream()){
+            byte[] imageBytes = in.readAllBytes();
+            String base64 = Base64.getEncoder().encodeToString(imageBytes);
+            return "data:image/png;base64," + base64;
+        }
+    }
+
     private OgMetaData extractOgMetaData(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
 
@@ -31,7 +43,9 @@ public class OgsvgapiService {
                 .replace(">", "&gt;");
     }
 
-    private String generateSvgFromMeta(OgMetaData meta) {
+    private String generateSvgFromMeta(OgMetaData meta) throws IOException {
+        String base64Image = convertImageUrlToBase64(meta.getImage());
+
         return String.format("""
             <svg viewBox="0 0 1200 200" width="100%%" height="100%%" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100%%" height="100%%" fill="#161a23" rx="8" ry="8"/>
@@ -60,7 +74,7 @@ public class OgsvgapiService {
                 </foreignObject>
             </svg>
             """,
-                escapeXml(meta.getImage()),
+                base64Image,
                 escapeXml(meta.getTitle()),
                 escapeXml(meta.getDescription()),
                 escapeXml(meta.getUrl()));
