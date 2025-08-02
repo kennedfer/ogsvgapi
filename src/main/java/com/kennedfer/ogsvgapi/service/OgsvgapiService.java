@@ -14,8 +14,12 @@ import java.util.Base64;
 
 @Service
 public class OgsvgapiService {
+    private static final String BASE64_PLACEHOLDER=
+            "data:image/png;base64iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAnsB9vCdY64AAAAASUVORK5CYII";
 
     private String convertImageUrlToBase64(String imageUrl) throws IOException {
+        if(imageUrl == null || imageUrl.isEmpty()) return BASE64_PLACEHOLDER;
+
         try(InputStream in = new URL(imageUrl).openStream()){
             byte[] imageBytes = in.readAllBytes();
             String base64 = Base64.getEncoder().encodeToString(imageBytes);
@@ -30,6 +34,11 @@ public class OgsvgapiService {
         String description = doc.select("meta[property=og:description]").attr("content");
         String pageUrl = doc.select("meta[property=og:url]").attr("content");
         String imageUrl = doc.select("meta[property=og:image]").attr("content");
+
+        //Fallbacks
+        if (title.isBlank()) title = "Página sem título Open Graph";
+        if (description.isBlank()) description = "Sem descrição disponível";
+        if (pageUrl.isBlank()) pageUrl = url; // usa a URL original como fallback
 
         return new OgMetaData(title, description, pageUrl, imageUrl);
     }
