@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OG SVG API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="grid place-items-center h-screen bg-[#010409] text-[#c9d1d9] font-sans leading-relaxed">
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-bold mb-6 text-blue-200">
+        Open Graph SVG API
+    </h1>
+
+    <p class="text-lg mb-4">
+        Gere previews SVG dinâmicos de qualquer página com metadados
+        <code class="bg-[#161b22] px-1 rounded text-blue-200">Open Graph</code>.
+    </p>
+
+    <div class="bg-[#161b22] p-4 rounded border border-[#21262d] mb-6">
+        <h2 class="text-xl font-semibold mb-2 text-[#8b949e]">Endpoint:</h2>
+        <pre class="text-sm text-blue-200 overflow-x-auto">
+<span class="bg-[#21262d] px-1 rounded-sm text-[#3fb950]">GET</span> /api/v1/svg?url=https://seusite.com
+</pre>
+    </div>
+
+    <div class="flex flex-col gap-1 bg-[#161b22] p-4 rounded border border-[#21262d] mb-6">
+        <h2 class="text-xl font-semibold text-[#8b949e]">Seu link:</h2>
+        <input
+                id="url"
+                class="w-full bg-[#0d1117] border border-[#21262d] rounded-sm text-sm p-2 text-[#c9d1d9] focus:outline-none focus:ring-2 focus:ring-blue-200"
+                placeholder="https://kennedfer.github.io"
+        />
+        <div class="flex justify-between">
+            <span>Selecione o tema:</span>
+            <select name="" id="">
+                <option value="">Github Dark</option>
+            </select>
+        </div>
+        
+
+    </div>
+
+
+    <div class="bg-[#161b22] p-4 rounded border border-[#21262d] mb-6">
+        <div class="flex justify-between items-start gap-2 w-full relative">
+            <h2 class="text-xl font-semibold text-[#8b949e]">Sua imagem markdown:</h2>
+            <button id="copy" aria-label="Copiar markdown" class="text-[#8b949e] hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                    <path
+                            d="M7 3.5A1.5 1.5 0 0 1 8.5 2h3.879a1.5 1.5 0 0 1 1.06.44l3.122 3.12A1.5 1.5 0 0 1 17 6.622V12.5a1.5 1.5 0 0 1-1.5 1.5h-1v-3.379a3 3 0 0 0-.879-2.121L10.5 5.379A3 3 0 0 0 8.379 4.5H7v-1Z" />
+                    <path
+                            d="M4.5 6A1.5 1.5 0 0 0 3 7.5v9A1.5 1.5 0 0 0 4.5 18h7a1.5 1.5 0 0 0 1.5-1.5v-5.879a1.5 1.5 0 0 0-.44-1.06L9.44 6.439A1.5 1.5 0 0 0 8.378 6H4.5Z" />
+                </svg>
+            </button>
+        </div>
+        <input
+                id="markdown-code"
+                disabled
+                value="Seu markdown estará aqui"
+                class="mt-2 font-mono font-semibold text-[#8b949e] bg-transparent w-full text-sm"
+        />
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-2 text-[#8b949e]">Preview gerado:</h2>
+      <img
+        class="rounded border border-[#21262d] w-full h-[120px] object-cover"
+        id="preview"
+        src="https://ogsvgapi.onrender.com/api/v1/svg?url=https://github.com/kennedfer&v=3"
+        alt="Preview SVG"
+      />
+    </div>
+
+    <footer class="text-sm text-[#8b949e] mt-12 text-center">
+        Feito por
+        <a
+                href="https://github.com/kennedfer"
+                class="text-blue-200 hover:underline"
+                target="_blank"
+        >
+            @kennedfer
+        </a>
+    </footer>
+
+    <script>
+        //   function debounce(func, delay) {
+        //     let timeoutId;
+        //     return function (...args) {
+        //       clearTimeout(timeoutId);
+        //       timeoutId = setTimeout(() => {
+        //         func.apply(this, args);
+        //       }, delay);
+        //     };
+        //   }
+
+          function copyMarkdown() {
+            navigator.clipboard.writeText(markdownCode.value);
+            alert("Markdown copiado para sua área de transferência: " + markdownCode.value);
+          }
+
+          function changeUrl() {
+            const url = urlInput.value;
+            previewImg.src = API_BASE_URL + url;
+            markdownCode.value = `[![Link de acesso à página](https://ogsvgapi.onrender.com/api/v1/svg?url=${url})](${url})`;
+          }
+
+          const API_BASE_URL = "https://ogsvgapi.onrender.com/api/v1/svg?url=";
+
+          const urlInput = document.getElementById("url");
+          const previewImg = document.getElementById("preview");
+          const markdownCode = document.getElementById("markdown-code");
+          const copyButton = document.getElementById("copy");
+
+          urlInput.onchange = changeUrl;
+          copyButton.onclick = copyMarkdown;
+    </script>
+</div>
+</body>
+
+</html>
