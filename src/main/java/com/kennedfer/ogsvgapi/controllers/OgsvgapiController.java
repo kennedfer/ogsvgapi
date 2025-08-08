@@ -1,4 +1,4 @@
-package com.kennedfer.ogsvgapi.controller;
+package com.kennedfer.ogsvgapi.controllers;
 
 import com.kennedfer.ogsvgapi.service.OgsvgapiService;
 
@@ -17,7 +17,7 @@ public class OgsvgapiController {
     private final OgsvgapiService service;
 
     @GetMapping(value = "/api/v1/svg", produces = "image/svg+xml")
-    public String getSvg(@RequestParam String url) throws IOException {
-        return service.getSvgStringFromUrl(url);
+    public String getSvg(@RequestParam String url, @RequestParam(defaultValue = "dark") String theme) throws IOException {
+        return service.getSvgStringFromUrl(url, theme);
     }
 }
