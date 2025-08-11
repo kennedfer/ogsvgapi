@@ -1,6 +1,6 @@
 package com.kennedfer.ogsvgapi.controllers;
 
-import com.kennedfer.ogsvgapi.service.OgsvgapiService;
+import com.kennedfer.ogsvgapi.services.OpenGraphService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,9 +12,9 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class OgsvgapiController {
+public class ApiController {
 
-    private final OgsvgapiService service;
+    private final OpenGraphService service;
 
     @GetMapping(value = "/api/v1/svg", produces = "image/svg+xml")
     public String getSvg(@RequestParam String url, @RequestParam(defaultValue = "dark") String theme) throws IOException {
