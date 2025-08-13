@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,7 +18,7 @@ public class OpenGraphService {
     public OgMetaData extractOgMetaData(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
 
-        Optional<String> title = Optional.of(doc.select("meta[property=og:title]").attr("content"));
+        String title = doc.select("meta[property=og:title]").attr("content");
         String description = doc.select("meta[property=og:description]").attr("content");
         String pageUrl = doc.select("meta[property=og:url]").attr("content");
         String imageUrl = doc.select("meta[property=og:image]").attr("content");
